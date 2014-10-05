@@ -1,0 +1,31 @@
+---
+
+- name: Add RabbitMQ repository
+  apt_repository: repo='deb http://www.rabbitmq.com/debian/ testing main' state=present
+
+- name: Add RabbitMQ's public key to trusted key list
+  apt_key: url=http://www.rabbitmq.com/rabbitmq-signing-key-public.asc state=present
+
+- name: Install RabbitMQ
+  apt: name=rabbitmq-server update_cache=yes state=present
+
+- name: Enable rabbitmq_management plugin
+  rabbitmq_plugin: names=rabbitmq_management state=enabled new_only=yes
+
+- name: Setup RabbitMQ admin user
+  rabbitmq_user: user=admin
+                 password=admin
+                 vhost=/
+                 configure_priv=.*
+                 read_priv=.*
+                 write_priv=.*
+                 state=present
+
+- name: Install pip
+  apt: name={{ item }} state=present
+  with_items:
+     - git-core
+     - python-pip
+
+- name: Install pika
+  pip: name=pika version=0.9.8

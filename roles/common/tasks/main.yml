@@ -1,0 +1,17 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Install useful packages
+  apt: name={{ item }} state=present
+  with_items:
+    - python-apt
+    - python-pycurl
+    - python-software-properties
+    - curl
+    - htop
+    - sysstat
+    - tree
+    - vim

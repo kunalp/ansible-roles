@@ -1,0 +1,15 @@
+server {
+    listen       *:80;
+    server_name  {{ server_hostname }};
+    root         {{ web_root }} ;
+    expires off;
+
+    location / {
+        index index.html index.htm;
+        try_files $uri $uri/ =404;
+    }
+
+    location ~* \.(gif|jpg|jpeg|png|css|js)$ {
+        expires max;
+    }
+}
