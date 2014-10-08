@@ -4,4 +4,4 @@
   apt: name=git update_cache=yes state=present
 
 - name: Copy the code from repository
-  git: repo={{ repository }} dest=/var/www/
+  git: repo={{ repository }} dest=/var/www/ accept_hostkey=True
