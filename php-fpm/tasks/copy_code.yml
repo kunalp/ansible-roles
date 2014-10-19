@@ -1,0 +1,9 @@
+---
+
+- name: Install git
+  apt: name=git update_cache=yes state=present
+  when: repository is defined
+
+- name: Copy the code from repository
+  git: repo={{ repository }} dest=/var/www/ accept_hostkey=True
+  when: repository is defined

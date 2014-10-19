@@ -1,0 +1,16 @@
+---
+
+- name: update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Install memcached
+  apt: name={{ item }} state=present
+  with_items:
+    - memcached
+    - php5-memcache
+
+- name: write memcached.conf
+  action: template src=memcached.conf dest=/etc/memcached.conf
+  notify:
+    - memcached-restart
+    - php5-fpm-restart

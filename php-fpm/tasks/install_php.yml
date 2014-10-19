@@ -1,0 +1,29 @@
+---
+
+- name: update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Install PHP
+  apt: name={{ item }} state=present
+  with_items:
+    - php5-fpm
+    - php5-gd
+    - php5-mcrypt
+    - php5-cli
+    - php5-curl
+
+- name: Write php.ini (FPM)
+  action: template src=php-fpm.ini dest=/etc/php5/fpm/php.ini
+  notify:
+    - php5-fpm-restart
+
+- name: Write php.ini (CLI)
+  action: template src=php-cli.ini dest=/etc/php5/cli/php.ini
+
+- name: Write php-sock.conf
+  action: template src=php-sock.conf dest=/etc/nginx/conf.d/php-sock.conf
+  notify:
+    - nginx-restart
+
+# install optional php extensions
+# install xdebug

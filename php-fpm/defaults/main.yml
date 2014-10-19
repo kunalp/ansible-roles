@@ -1,0 +1,22 @@
+---
+
+php_socket: ""
+memcache_socket: "/tmp/memcached.sock"
+
+php_display_errors: "Off"
+
+
+# Common Values:
+#   E_ALL (Show all errors, warnings and notices including coding standards.)
+#   E_ALL & ~E_NOTICE  (Show all errors, except for notices)
+#   E_ALL & ~E_NOTICE & ~E_STRICT  (Show all errors, except for notices and coding standards warnings.)
+#   E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR  (Show only errors)
+# Default Value: E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
+# Development Value: E_ALL
+# Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
+php_error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
+
+
+timezone: "America/New_York"
+
+install_xdebug: 0

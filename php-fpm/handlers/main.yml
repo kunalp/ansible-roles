@@ -1,0 +1,19 @@
+---
+- name: nginx-start
+  service: name=nginx start=started
+
+- name: nginx-restart
+  service: name=nginx state=restarted
+
+- name: nginx-reload
+  service: name=nginx state=reloaded
+
+- name: php5-fpm-restart
+  service: name=php5-fpm state=restarted
+
+
+- name: memcached-start
+  service: name=memcached start=started
+
+- name: memcached-restart
+  service: name=memcached state=restarted
