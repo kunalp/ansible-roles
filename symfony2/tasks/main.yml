@@ -1,0 +1,50 @@
+---
+
+- name: Write vhost
+  action: template src=default.conf dest=/etc/nginx/sites-enabled/{{ server_hostname }}
+  notify:
+    - nginx-restart
+
+- name: Install ACL utilities
+  apt: name={{ item }} state=latest
+  with_items:
+  - acl
+
+- name: Mount root filesystem with acl support
+  mount: name=/ src=/dev/sda1 fstype=ext4 opts=errors=remount-ro,acl state=present
+
+- name: Create cache directory
+  sudo: Yes
+  command:
+    mkdir -p {{ sf2_cache_dir }}
+    creates={{ sf2_cache_dir }}
+
+- name: Create log directory
+  sudo: Yes
+  command:
+    mkdir -p {{ sf2_log_dir }}
+    creates={{ sf2_log_dir }}
+
+- name: Update ACLs for cache/log directories
+  sudo: Yes
+  command: setfacl -R -m u:"www-data":rwX -m u:"vagrant":rwX {{ sf2_cache_dir }} {{ sf2_log_dir }}
+
+- name: Update default ACLs for cache/log directories
+  sudo: Yes
+  command: setfacl -dR -m u:"www-data":rwX -m u:"vagrant":rwX {{ sf2_cache_dir }} {{ sf2_log_dir }}
+
+- name: Clear the cache
+  command:
+    ./app/console cache:clear -e prod --no-debug
+    chdir={{ project_root }}
+    creates={{ project_root }}/app/cache/prod/appProdProjectContainer.php
+
+- name: Dump all assets to the filesystem
+  command:
+    ./app/console assetic:dump -e prod --no-debug
+    chdir={{ project_root }}
+
+- name: Install bundles' web assets under the public web directory
+  command:
+    ./app/console assets:install -e prod --no-debug
+    chdir={{ project_root }}

@@ -1,0 +1,4 @@
+---
+
+sf2_cache_dir: "/tmp/cache"
+sf2_log_dir: "/var/log/symfony2"
