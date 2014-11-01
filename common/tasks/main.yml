@@ -8,10 +8,17 @@
   apt: name={{ item }} state=present
   with_items:
     - python-apt
-    - python-pycurl
+    - python-pip
     - python-software-properties
     - curl
     - htop
     - sysstat
     - tree
     - vim
+
+- name: Ensure bash is up-to-date
+  apt: name=bash state=latest
+
+- name: Install PycURL -- cURL library module for Python
+  pip: name=pycurl
+
