@@ -1,5 +1,8 @@
 ---
 
+server_user: www-data
+server_group: www-data
+
 php_socket: ""
 memcache_socket: "/tmp/memcached.sock"
 
