@@ -47,9 +47,6 @@
   sudo: Yes
   shell: composer self-update
 
-- name: Install composer dependencies
-  composer: working_dir={{ project_root }} no_dev=no
-
 - name: Add {{ bin_dir }} to PATH
   lineinfile: >
    dest=/etc/environment
