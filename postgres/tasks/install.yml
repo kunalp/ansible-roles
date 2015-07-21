@@ -1,0 +1,18 @@
+---
+
+- name: Install PostgreSQL
+  apt: name={{ item }} state=latest
+  with_items:
+    - postgresql-{{postgres_version}}
+    - postgresql-client-{{postgres_version}}
+    - postgresql-contrib-{{postgres_version}}
+    - php5-pgsql
+    - libpq-dev
+    - python-psycopg2
+
+- name: Set password for postgres role
+  postgresql_user:
+    name: postgres
+    password: lookup('password', lookup('env', 'HOME') + '/.ansible/credentials/' + project_name + '/env/' + ansible_hostname + '/pgpw-postgres length=32')
+  sudo: yes
+  sudo_user: "{{postgres_admin_user}}"

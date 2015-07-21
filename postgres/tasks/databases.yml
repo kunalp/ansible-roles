@@ -1,0 +1,22 @@
+---
+
+- name: Ensure PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
+
+- name: Ensure the PostgreSQL database(s) are present
+  postgresql_db:
+    name: "{{item.name}}"
+    owner: "{{postgres_database_owner}}"
+    encoding: "{{postgres_encoding}}"
+    lc_collate: "{{postgres_locale}}"
+    lc_ctype: "{{postgres_locale}}"
+    port: "{{postgres_port}}"
+    template: "template0"
+    state: present
+    login_user: "{{postgres_admin_user}}"
+  sudo: yes
+  sudo_user: "{{postgres_admin_user}}"
+  with_items: postgres_dbs
+  when: postgres_dbs|length > 0

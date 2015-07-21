@@ -48,3 +48,5 @@
   command:
     ./app/console assets:install -e prod --no-debug
     chdir={{ project_root }}
+
+# setup env vars for postgres db/user

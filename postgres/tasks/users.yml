@@ -1,0 +1,32 @@
+---
+
+- name: Ensure PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
+
+- name: Ensure the PostgreSQL users are present
+  postgresql_user:
+    name: "{{item.name}}"
+    password: "{{  lookup('password', lookup('env', 'HOME') + '/.ansible/credentials/' + project_name + '/env/' + ansible_hostname + '/pgpw-' + item.name + ' length=32')  }}"
+    port: "{{postgres_port}}"
+    state: present
+    login_user: "{{postgres_admin_user}}"
+  sudo: yes
+  sudo_user: "{{postgres_admin_user}}"
+  with_items: postgres_users
+  when: postgres_users|length > 0
+
+- name: Update the user privileges
+  postgresql_user:
+    name: "{{item.user}}"
+    db: "{{item.db | default(omit)}}"
+    port: "{{postgres_port}}"
+    priv: "{{item.priv | default(omit)}}"
+    state: present
+    login_user: "{{postgres_admin_user}}"
+    role_attr_flags: "{{item.role_attr_flags | default(omit)}}"
+  sudo: yes
+  sudo_user: "{{postgres_admin_user}}"
+  with_items: postgres_user_privileges
+  when: postgres_user_privileges|length > 0
