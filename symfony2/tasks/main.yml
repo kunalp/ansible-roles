@@ -5,6 +5,9 @@
   notify:
     - nginx-restart
 
+- name: Write vhost
+  action: template src=sf2_env_cars.sh dest=/etc/profile.d/sf2_env_cars.sh
+
 - name: Install ACL utilities
   apt: name={{ item }} state=latest
   with_items:
@@ -38,6 +41,15 @@
     ./app/console cache:clear -e prod --no-debug
     chdir={{ project_root }}
     creates={{ project_root }}/app/cache/prod/appProdProjectContainer.php
+  environment:
+    SYMFONY__DATABASE__DRIVER: "{{ database_driver }}"
+    SYMFONY__DATABASE__HOST: "{{ database_host }}"
+    SYMFONY__DATABASE__PORT: "{{ database_port }}"
+    SYMFONY__DATABASE__NAME: "{{ database_name }}"
+    SYMFONY__DATABASE__USER: "{{ database_user }}"
+    SYMFONY__DATABASE__PASSWORD: "{{ database_password }}"
+    SYMFONY__SF2_SECRET: "{{ sf2_secret }}"
+    
 
 - name: Dump all assets to the filesystem
   command:
@@ -48,5 +60,3 @@
   command:
     ./app/console assets:install -e prod --no-debug
     chdir={{ project_root }}
-
-# setup env vars for postgres db/user
