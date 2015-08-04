@@ -13,6 +13,6 @@
 - name: Set password for postgres role
   postgresql_user:
     name: postgres
-    password: lookup('password', lookup('env', 'HOME') + '/.ansible/credentials/' + project_name + '/env/' + ansible_hostname + '/pgpw-postgres length=32')
+    password: "{{ lookup('password', lookup('env', 'HOME') + '/.ansible/credentials/' + project_name + '/env/' + ansible_hostname + '/pgpw-postgres length=32') }}"
   sudo: yes
   sudo_user: "{{postgres_admin_user}}"
