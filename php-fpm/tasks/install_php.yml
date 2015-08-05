@@ -30,6 +30,12 @@
   notify:
     - php5-fpm-restart
 
+- name: Install PostgreSQL support
+  apt: name=php5-pgsql state=latest
+  when: postgres_user_privileges|length > 0
+  notify:
+    - php5-fpm-restart
+
 - name: Write php-sock.conf
   action: template src=php-sock.conf dest=/etc/nginx/conf.d/php-sock.conf
   notify:

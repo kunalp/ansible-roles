@@ -6,7 +6,6 @@
     - postgresql-{{postgres_version}}
     - postgresql-client-{{postgres_version}}
     - postgresql-contrib-{{postgres_version}}
-    - php5-pgsql
     - libpq-dev
     - python-psycopg2
 
