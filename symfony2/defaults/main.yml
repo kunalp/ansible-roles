@@ -3,6 +3,7 @@
 database_driver: pdo_pgsql
 database_host: localhost
 database_port: 5432
+database_name: symfony2
 database_user: symfony2
 
 sf2_cache_dir: "/tmp/cache"

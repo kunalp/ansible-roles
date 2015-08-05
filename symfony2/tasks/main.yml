@@ -45,9 +45,9 @@
     SYMFONY__DATABASE__DRIVER: "{{ database_driver }}"
     SYMFONY__DATABASE__HOST: "{{ database_host }}"
     SYMFONY__DATABASE__PORT: "{{ database_port }}"
-    SYMFONY__DATABASE__NAME: "{{ database_name }}"
-    SYMFONY__DATABASE__USER: "{{ database_user }}"
-    SYMFONY__DATABASE__PASSWORD: "{{ database_password }}"
+    SYMFONY__DATABASE__NAME: "{{ postgres_dbs[0].name }}"
+    SYMFONY__DATABASE__USER: "{{ postgres_users[0].username }}"
+    SYMFONY__DATABASE__PASSWORD: "{{ postgres_users[0].password }}"
     SYMFONY__SF2_SECRET: "{{ sf2_secret }}"
     
 
