@@ -1,2 +1,5 @@
 ---
 
+- include: install.yml
+- include: databases.yml
+- include: users.yml

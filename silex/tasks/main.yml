@@ -1,0 +1,6 @@
+---
+
+- name: Write vhost
+  action: template src=default.conf dest=/etc/nginx/sites-enabled/{{ server_hostname }}
+  notify:
+    - nginx-restart
