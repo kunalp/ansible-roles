@@ -7,4 +7,4 @@ database_user: symfony2
 
 sf2_cache_dir: "/tmp/cache"
 sf2_log_dir: "/var/log/symfony2"
-sf2_secret: "{{ lookup('password', '/tmp/sf2_secret length=32 chars=ascii_letters') }}"
+sf2_secret: "{{ lookup('password', '~/.ansible/lookups/' + project_name + '/' + server_hostname + '/sf2_secret length=32 chars=ascii_letters') }}"
