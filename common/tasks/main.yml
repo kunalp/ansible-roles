@@ -1,14 +1,17 @@
 ---
 # This playbook contains common plays that will be run on all nodes.
 
-- name: update apt cache
-  apt: update_cache=yes cache_valid_time=3600
-
-- name: Install NTP
+- name: Install NTP (Ubuntu)
+  when: ansible_distribution == 'Ubuntu'
   apt: name=ntp state=present
 
-- name: Install useful packages
-  apt: name={{ item }} state=present
+- name: Install NTP (CentOS)
+  when: ansible_distribution == 'CentOS'
+  yum: name=ntp state=present
+
+- name: Install useful packages (Ubuntu)
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=360
+  when: ansible_distribution == 'Ubuntu'
   with_items:
     - python-apt
     - python-pip
@@ -19,8 +22,24 @@
     - tree
     - vim
 
-- name: Ensure bash is up-to-date
+- name: Install useful packages (CentOS)
+  yum: name={{ item }} state=present update_cache=yes
+  when: ansible_distribution == 'CentOS'
+  with_items:
+    - python-pip
+    - curl
+    - htop
+    - sysstat
+    - tree
+    - vim
+
+- name: Ensure bash is up-to-date (Ubuntu)
+  when: ansible_distribution == 'Ubuntu'
   apt: name=bash state=latest
+
+- name: Ensure bash is up-to-date (CentOS)
+  when: ansible_distribution == 'CentOS'
+  yum: name=bash state=latest
 
 - name: Install PycURL -- cURL library module for Python
   pip: name=pycurl
