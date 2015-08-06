@@ -1,0 +1,13 @@
+---
+
+- name: Install the EPEL repo
+  yum: name=epel-release state=latest
+
+- name: Install redis
+  yum: name=redis state=latest
+
+- name: Write redis.conf
+  template: src=redis.conf dest=/etc/redis.conf owner=redis group=root mode="u=rw,g=r,o=r"
+
+- name: Start redis
+  service: name=redis state=started enabled=yes
