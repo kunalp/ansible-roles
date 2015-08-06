@@ -8,6 +8,13 @@
 
 - name: Write redis.conf
   template: src=redis.conf dest=/etc/redis.conf owner=redis group=root mode="u=rw,g=r,o=r"
+  notify:
+    - redis-restart
+
+- name: Write redis-sentinel.conf
+  template: src=redis-sentinel.conf dest=/etc/redis-sentinel.conf owner=redis group=root mode="u=rw,g=r,o=r"
+  notify:
+    - redis-restart
 
 - name: Start redis
   service: name=redis state=started enabled=yes
