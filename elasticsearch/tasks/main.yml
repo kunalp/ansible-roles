@@ -15,12 +15,12 @@
     - elasticsearch-start
 
 - name: write elasticsearch.yml
-  action: template src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+  template: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
   notify:
     - elasticsearch-restart
 
 - name: write logging.yml
-  action: template src=logging.yml dest=/etc/elasticsearch/logging.yml
+  template: src=logging.yml dest=/etc/elasticsearch/logging.yml
   notify:
     - elasticsearch-restart
 

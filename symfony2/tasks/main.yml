@@ -1,12 +1,12 @@
 ---
 
 - name: Write vhost
-  action: template src=default.conf dest=/etc/nginx/sites-enabled/{{ server_hostname }}
+  template: src=default.conf dest=/etc/nginx/sites-enabled/{{ server_hostname }}
   notify:
     - nginx-restart
 
 - name: Write vhost
-  action: template src=sf2_env_cars.sh dest=/etc/profile.d/sf2_env_cars.sh
+  template: src=sf2_env_cars.sh dest=/etc/profile.d/sf2_env_cars.sh
 
 - name: Install ACL utilities
   apt: name={{ item }} state=latest
