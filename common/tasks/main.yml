@@ -1,45 +1,17 @@
 ---
 # This playbook contains common plays that will be run on all nodes.
 
-- name: Install NTP (Ubuntu)
-  when: ansible_distribution == 'Ubuntu'
-  apt: name=ntp state=present
+- name: Install the EPEL repo
+  yum: name=epel-release state=latest
 
-- name: Install NTP (CentOS)
-  when: ansible_distribution == 'CentOS'
+- name: Install NTP
   yum: name=ntp state=present
 
-- name: Install useful packages (Ubuntu)
-  apt: name={{ item }} state=present update_cache=yes cache_valid_time=360
-  when: ansible_distribution == 'Ubuntu'
-  with_items:
-    - python-apt
-    - python-pip
-    - python-software-properties
-    - curl
-    - htop
-    - sysstat
-    - tree
-    - vim
+- name: Install pip
+  yum: name=python-pip state=present update_cache=yes
 
-- name: Install useful packages (CentOS)
-  yum: name={{ item }} state=present update_cache=yes
-  when: ansible_distribution == 'CentOS'
-  with_items:
-    - python-pip
-    - curl
-    - htop
-    - sysstat
-    - tree
-    - vim
-
-- name: Ensure bash is up-to-date (Ubuntu)
-  when: ansible_distribution == 'Ubuntu'
-  apt: name=bash state=latest
-
-- name: Ensure bash is up-to-date (CentOS)
-  when: ansible_distribution == 'CentOS'
-  yum: name=bash state=latest
+- name: Install curl
+  yum: name=curl state=present
 
 - name: Install PycURL -- cURL library module for Python
   pip: name=pycurl

@@ -2,18 +2,20 @@
 - name: nginx-start
   service: name=nginx start=started
 
+- name: nginx-stop
+  service: name=nginx state=stopped
+
 - name: nginx-restart
   service: name=nginx state=restarted
 
 - name: nginx-reload
   service: name=nginx state=reloaded
 
-- name: php5-fpm-restart
-  command: service php5-fpm restart
+- name: php-fpm-start
+  service: name=php-fpm state=started
 
+- name: php-fpm-stop
+  service: name=php-fpm state=stopped
 
-- name: memcached-start
-  service: name=memcached start=started
-
-- name: memcached-restart
-  service: name=memcached state=restarted
+- name: php-fpm-restart
+  service: name=php-fpm state=restarted

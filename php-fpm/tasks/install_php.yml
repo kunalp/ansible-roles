@@ -1,57 +1,44 @@
 ---
 
-- name: update apt cache
-  apt: update_cache=yes cache_valid_time=3600
-
 - name: Install PHP
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=latest
   with_items:
-    - php5-fpm
-    - php5-gd
-    - php5-mcrypt
-    - php5-cli
-    - php5-curl
-
-- name: Write php.ini (CLI)
-  action: template src=php-cli.ini dest=/etc/php5/cli/php.ini
-
-- name: Write php.ini (FPM)
-  action: template src=php-fpm.ini dest=/etc/php5/fpm/php.ini
+    - php-common
+    - php-fpm
+    - php-gd
+    - php-mcrypt
+    - php-cli
+- name: Write php.ini
+  template: src=php.ini dest=/etc/php.ini
   notify:
-    - php5-fpm-restart
+    - php-fpm-restart
 
 - name: Write php-fpm.conf
-  action: template src=php-fpm.conf dest=/etc/php5/fpm/php-fpm.conf
+  template: src=php-fpm.conf dest=/etc/php-fpm.conf
   notify:
-    - php5-fpm-restart
+    - php-fpm-restart
 
 - name: Write php fpm pool config
-  action: template src=www.conf dest=/etc/php5/fpm/pool.d/www.conf
+  template: src=php-fpm.d/www.conf dest=/etc/php-fpm.d/www.conf
   notify:
-    - php5-fpm-restart
+    - php-fpm-restart
+
+- name: Start PHP-FPM
+  service: name=php-fpm state=started enabled=yes
 
 - name: Install PostgreSQL support
-  apt: name=php5-pgsql state=latest
+  yum: name=php-pgsql state=latest
   when: postgres_user_privileges|length > 0
   notify:
-    - php5-fpm-restart
+    - php-fpm-restart
 
-- name: Write php-sock.conf
-  action: template src=php-sock.conf dest=/etc/nginx/conf.d/php-sock.conf
-  notify:
-    - nginx-restart
-
-- name: Install git to be used by composer
-  apt: name=git state=latest
+- name: Install git
+  yum: name=git state=latest
 
 - name: Install Composer
   shell:
     curl -sS https://getcomposer.org/installer | php && /bin/mv -f /home/vagrant/composer.phar /usr/local/bin/composer
     creates=/usr/local/bin/composer
-
-- name: Update Composer
-  sudo: Yes
-  shell: composer self-update
 
 - name: Add {{ bin_dir }} to PATH
   lineinfile: >

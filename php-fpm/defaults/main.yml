@@ -1,13 +1,13 @@
 ---
 
-server_user: www-data
-server_group: www-data
+server_user: nginx
+server_group: nginx
 
-php_socket: ""
-memcache_socket: "/tmp/memcached.sock"
+web_root: /var/www
+
+fpm_listen: 127.0.0.1:9000
 
 php_display_errors: "Off"
-
 
 # Common Values:
 #   E_ALL (Show all errors, warnings and notices including coding standards.)
