@@ -1,7 +1,7 @@
 ---
 
 - name: elasticsearch-start
-  service: name=elasticsearch start=started
+  service: name=elasticsearch state=started
 
 - name: elasticsearch-stop
   service: name=elasticsearch state=stopped
