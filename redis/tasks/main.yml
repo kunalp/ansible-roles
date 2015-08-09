@@ -1,8 +1,5 @@
 ---
 
-- name: Install the EPEL repo
-  yum: name=epel-release state=latest
-
 - name: Install redis
   yum: name=redis state=latest
 

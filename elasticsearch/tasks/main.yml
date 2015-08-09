@@ -7,7 +7,7 @@
   rpm_key: state=present key=https://packages.elastic.co/GPG-KEY-elasticsearch
 
 - name: Add elasticsearch rpm repository
-  template: src=yum.repos.d/elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+  copy: src=elasticsearch.repo dest=/etc/yum.repos.d/ owner=root group=root mode=0644
 
 - name: Install elasticsearch
   yum: name=elasticsearch update_cache=yes state=present
