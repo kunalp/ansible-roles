@@ -1,10 +1,5 @@
 ---
 
-- name: Ensure PostgreSQL is running
-  service:
-    name: postgresql
-    state: started
-
 - name: Ensure the PostgreSQL database(s) are present
   postgresql_db:
     name: "{{item.name}}"

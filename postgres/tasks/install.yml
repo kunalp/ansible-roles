@@ -1,13 +1,21 @@
 ---
 
+- name: Add PostgreSQL repo
+  yum: name=http://yum.postgresql.org/{{postgres_version}}/redhat/rhel-6-x86_64/pgdg-redhat{{postgres_version2}}-{{postgres_version}}-1.noarch.rpm update_cache=yes state=present
+
 - name: Install PostgreSQL
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   with_items:
-    - postgresql-{{postgres_version}}
-    - postgresql-client-{{postgres_version}}
-    - postgresql-contrib-{{postgres_version}}
-    - libpq-dev
+    - postgresql{{postgres_version2}}
+    - postgresql{{postgres_version2}}-server
+    - postgresql{{postgres_version2}}-contrib
     - python-psycopg2
+
+- name: Setup PostgreSQL
+  command: /usr/pgsql-{{postgres_version}}/bin/postgresql{{postgres_version2}}-setup initdb creates=/var/lib/pgsql/{{postgres_version}}/initdb.log
+
+- name: Ensure PostgreSQL is running
+  service: name=postgresql-{{postgres_version}} state=started enabled=yes
 
 - name: Set password for postgres role
   postgresql_user:

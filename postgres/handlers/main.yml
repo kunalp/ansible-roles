@@ -1,13 +1,13 @@
 ---
 
-- name: postgresql-start
-  service: name=postgresql start=started
+- name: postgres-start
+  service: name=postgresql-{{postgres_version}} start=started
 
-- name: postgresql-stop
-  service: name=postgresql start=stopped
+- name: postgres-stop
+  service: name=postgresql-{{postgres_version}} start=stopped
 
-- name: postgresql-restart
-  service: name=postgresql state=restarted
+- name: postgres-restart
+  service: name=postgresql-{{postgres_version}} state=restarted
 
-- name: postgresql-reload
-  service: name=postgresql state=reloaded
+- name: postgres-reload
+  service: name=postgresql-{{postgres_version}} state=reloaded

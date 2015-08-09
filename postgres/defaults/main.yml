@@ -1,7 +1,8 @@
 ---
 
 # Basic settings
-postgres_version: 9.3
+postgres_version: 9.4
+postgres_version2: "{{ postgres_version | replace(".", "") }}"
 postgres_encoding: 'UTF-8'
 postgres_locale: 'en_US.UTF-8'
 
