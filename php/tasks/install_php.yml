@@ -1,0 +1,81 @@
+---
+
+- name: Copy Remi's GPG key
+  copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg owner=root group=root mode=0644
+
+- name: Copy Remi's repo file
+  copy: src=remi.repo dest=/etc/yum.repos.d/ owner=root group=root mode=0644
+
+- name: Install remi-release package
+  yum: name=remi-release state=installed enablerepo=remi
+
+- name: Make sure remi repo is enabled
+  ini_file: dest=/etc/yum.repos.d/remi.repo
+            section=remi
+            option=enabled
+            value=1
+
+- name: Make sure remi-php56 repo is enabled
+  ini_file: dest=/etc/yum.repos.d/remi.repo
+            section=remi-php56
+            option=enabled
+            value=1
+
+- name: Install PHP
+  yum: name={{item}}-{{php_version}} state=present
+  with_items:
+    - php-common
+    - php-fpm
+    - php-gd
+    - php-mcrypt
+    - php-cli
+    - php-opcache
+
+- name: Configure PHP
+  template: src=php.ini dest=/etc/php.ini
+  notify:
+    - php-fpm-restart
+
+- name: Configure PHP-FPM
+  template: src=php-fpm.conf dest=/etc/php-fpm.conf
+  notify:
+    - php-fpm-restart
+
+- name: Configure PHP-FPM pool
+  template: src=php-fpm.d/www.conf dest=/etc/php-fpm.d/www.conf
+  notify:
+    - php-fpm-restart
+
+- name: Start PHP-FPM
+  service: name=php-fpm state=started enabled=yes
+
+- name: Install git
+  yum: name=git state=latest
+
+- name: Install Composer
+  shell:
+    curl -sS https://getcomposer.org/installer | php && /bin/mv -f /home/vagrant/composer.phar /usr/local/bin/composer
+    creates=/usr/local/bin/composer
+
+- name: Add composer bin diriectory to PATH
+  lineinfile: >
+   dest=/etc/environment
+   state=present
+   backrefs=yes
+   regexp='PATH=(["]*)((?!.*?{{ bin_dir }}).*?)(["]*)$'
+   line="PATH=\1\2:{{ bin_dir }}\3"
+  when: bin_dir is defined
+
+- name: Install PostgreSQL support
+  yum: name={{item}}-{{php_version}} state=present
+  when: postgres_user_privileges|length > 0
+  with_items:
+    - php-pgsql
+    - php-pdo
+  notify:
+    - php-fpm-restart
+
+- name: Install xdebug
+  yum: name=php-pecl-xdebug state={{ (install_xdebug == 1) | ternary('latest','absent') }}
+  notify:
+    - php-fpm-restart

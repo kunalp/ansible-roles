@@ -7,6 +7,8 @@ web_root: /var/www
 
 fpm_listen: 127.0.0.1:9000
 
+php_version: 5.6.12-1.el7.remi
+
 php_display_errors: "Off"
 
 # Common Values:
@@ -18,7 +20,6 @@ php_display_errors: "Off"
 # Development Value: E_ALL
 # Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
 php_error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
-
 
 timezone: "America/New_York"
 
