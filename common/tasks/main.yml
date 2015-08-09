@@ -8,13 +8,13 @@
   copy: src=epel.repo dest=/etc/yum.repos.d/ owner=root group=root mode=0644
 
 - name: Install epel-release package
-  yum: name=epel-release state=installed enablerepo=epel
+  yum: name=epel-release update_cache=yes state=installed enablerepo=epel
 
 - name: Install NTP
   yum: name=ntp state=present
 
 - name: Install pip
-  yum: name=python-pip state=present update_cache=yes
+  yum: name=python-pip state=present
 
 - name: Install curl
   yum: name=curl state=present
