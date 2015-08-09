@@ -20,7 +20,7 @@
   file: dest=/etc/nginx/sites-enabled mode=755 owner=root group=root state=directory
 
 - name: write vhost
-  template: src=nginx/sites-enabled/default.conf dest=/etc/nginx/sites-enabled/{{ server_hostname }}
+  template: src=nginx/sites-enabled/vhost.conf dest=/etc/nginx/sites-enabled/{{ server_hostname }}
   notify:
     - nginx-restart
 
