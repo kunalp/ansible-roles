@@ -30,6 +30,8 @@
     - php-mcrypt
     - php-cli
     - php-opcache
+    - php-mbstring
+    - php-xml
 
 - name: Configure PHP
   template: src=php.ini dest=/etc/php.ini
