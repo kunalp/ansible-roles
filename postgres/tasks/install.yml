@@ -17,6 +17,16 @@
 - name: Ensure PostgreSQL is running
   service: name=postgresql-{{postgres_version}} state=started enabled=yes
 
+- name: Copy postgresql.conf
+  copy: src=postgresql.conf dest=/var/lib/pgsql/{{postgres_version}}/data owner=root group=root mode=0644
+  notify:
+    - postgres-restart
+
+- name: Copy pg_hba.conf
+  copy: src=pg_hba.conf dest=/var/lib/pgsql/{{postgres_version}}/data owner=root group=root mode=0644
+  notify:
+    - postgres-restart
+
 - name: Set password for postgres role
   postgresql_user:
     name: postgres
