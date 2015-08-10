@@ -9,7 +9,7 @@
   template: src=sf2_env_cars.sh dest=/etc/profile.d/sf2_env_cars.sh
 
 - name: Install ACL utilities
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   with_items:
   - acl
 
@@ -30,11 +30,11 @@
 
 - name: Update ACLs for cache/log directories
   sudo: Yes
-  command: setfacl -R -m u:"www-data":rwX -m u:"vagrant":rwX {{ sf2_cache_dir }} {{ sf2_log_dir }}
+  command: setfacl -R -m u:nginx:rwX -m u:vagrant:rwX {{ sf2_cache_dir }} {{ sf2_log_dir }}
 
 - name: Update default ACLs for cache/log directories
   sudo: Yes
-  command: setfacl -dR -m u:"www-data":rwX -m u:"vagrant":rwX {{ sf2_cache_dir }} {{ sf2_log_dir }}
+  command: setfacl -dR -m u:nginx:rwX -m u:vagrant:rwX {{ sf2_cache_dir }} {{ sf2_log_dir }}
 
 - name: Clear the cache
   command:
