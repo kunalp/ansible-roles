@@ -38,9 +38,9 @@
 
 - name: Clear the cache
   command:
-    ./app/console cache:clear -e prod --no-debug
+    ./bin/console cache:clear -e prod --no-debug
     chdir={{ project_root }}
-    creates={{ project_root }}/app/cache/prod/appProdProjectContainer.php
+    creates={{ sf2_cache_dir }}/prod/appProdProjectContainer.php
   environment:
     SYMFONY__DATABASE__DRIVER: "{{ database_driver }}"
     SYMFONY__DATABASE__HOST: "{{ database_host }}"
@@ -51,12 +51,12 @@
     SYMFONY__SF2_SECRET: "{{ sf2_secret }}"
     
 
-- name: Dump all assets to the filesystem
-  command:
-    ./app/console assetic:dump -e prod --no-debug
-    chdir={{ project_root }}
+#- name: Dump all assets to the filesystem
+#  command:
+#    ./bin/console assetic:dump -e prod --no-debug
+#    chdir={{ project_root }}
 
 - name: Install bundles' web assets under the public web directory
   command:
-    ./app/console assets:install -e prod --no-debug
+    ./bin/console assets:install -e prod --no-debug
     chdir={{ project_root }}
