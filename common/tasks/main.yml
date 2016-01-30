@@ -22,3 +22,5 @@
 - name: Install PycURL -- cURL library module for Python
   pip: name=pycurl
 
+- name: Install yum-utils
+  yum: name=yum-utils state=present

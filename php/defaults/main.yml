@@ -7,7 +7,7 @@ web_root: /var/www
 
 fpm_listen: 127.0.0.1:9000
 
-php_version: 5.6.12-1.el7.remi
+php_version: php70
 
 php_display_errors: "Off"
 

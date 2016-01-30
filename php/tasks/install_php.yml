@@ -1,28 +1,16 @@
 ---
 
-- name: Copy Remi's GPG key
-  copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg owner=root group=root mode=0644
+- name: Install the EPEL repository configuration package
+  yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
 
-- name: Copy Remi's repo file
-  copy: src=remi.repo dest=/etc/yum.repos.d/ owner=root group=root mode=0644
+- name: Install the Remi repository configuration package
+  yum: name=http://rpms.remirepo.net/enterprise/remi-release-7.rpm state=present
 
-- name: Install remi-release package
-  yum: name=remi-release state=installed enablerepo=remi
-
-- name: Make sure remi repo is enabled
-  ini_file: dest=/etc/yum.repos.d/remi.repo
-            section=remi
-            option=enabled
-            value=1
-
-- name: Make sure remi-php56 repo is enabled
-  ini_file: dest=/etc/yum.repos.d/remi.repo
-            section=remi-php56
-            option=enabled
-            value=1
+- name: Enable the repository
+  command: yum-config-manager --enable remi-{{php_version}}
 
 - name: Install PHP
-  yum: name={{item}}-{{php_version}} state=present
+  yum: name={{item}} state=latest update_cache=yes
   with_items:
     - php-common
     - php-fpm
@@ -43,6 +31,8 @@
   notify:
     - php-fpm-restart
 
+- file: path=/etc/php-fpm.d state=directory mode=0755
+
 - name: Configure PHP-FPM pool
   template: src=php-fpm.d/www.conf dest=/etc/php-fpm.d/www.conf
   notify:
@@ -52,7 +42,7 @@
   service: name=php-fpm state=started enabled=yes
 
 - name: Install git
-  yum: name=git state=latest
+  yum: name=git state=present
 
 - name: Install Composer
   shell:
@@ -69,7 +59,7 @@
   when: bin_dir is defined
 
 - name: Install PostgreSQL support
-  yum: name={{item}}-{{php_version}} state=present
+  yum: name={{item}} state=present
   when: postgres_user_privileges|length > 0
   with_items:
     - php-pgsql
