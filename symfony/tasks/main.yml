@@ -22,6 +22,10 @@
   sudo: Yes
   file: path={{ sf2_log_dir }} state=directory
 
+- name: Create sessions directory
+  sudo: Yes
+  file: path={{ sf2_session_dir }} state=directory
+
 - name: Update ACLs for cache/log directories
   sudo: Yes
   command: setfacl -R -m u:nginx:rwX -m u:vagrant:rwX {{ sf2_cache_dir }} {{ sf2_log_dir }} {{ sf2_session_dir }}
