@@ -27,6 +27,9 @@
   notify:
     - postgres-restart
 
+- name: Restart PostgreSQL
+  service: name=postgresql-{{postgres_version}} state=restarted
+
 - name: Set password for postgres role
   postgresql_user:
     name: postgres
