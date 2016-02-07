@@ -1,0 +1,10 @@
+---
+
+- name: Get key for owncloud repository
+  rpm_key: state=present key=https://download.owncloud.org/download/repositories/stable/CentOS_7/repodata/repomd.xml.key
+
+- name: Add ownlcoud repo
+  get_url: url=http://download.owncloud.org/download/repositories/stable/CentOS_7/ce:stable.repo dest=/etc/yum.repos.d/ce:stable.repo
+
+- name: Install owncloud
+  yum: name=owncloud state=present update_cache=yes
