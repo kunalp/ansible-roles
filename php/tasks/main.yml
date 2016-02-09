@@ -2,4 +2,6 @@
 
 - include: install_nginx.yml
 - include: install_php.yml
+- include: install_composer.yml
+  when: install_composer == 1
 - include: copy_code.yml

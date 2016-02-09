@@ -41,23 +41,6 @@
 - name: Start PHP-FPM
   service: name=php-fpm state=started enabled=yes
 
-- name: Install git
-  yum: name=git state=present
-
-- name: Install Composer
-  shell:
-    curl -sS https://getcomposer.org/installer | php && /bin/mv -f /home/vagrant/composer.phar /usr/local/bin/composer
-    creates=/usr/local/bin/composer
-
-- name: Add composer bin diriectory to PATH
-  lineinfile: >
-   dest=/etc/environment
-   state=present
-   backrefs=yes
-   regexp='PATH=(["]*)((?!.*?{{ bin_dir }}).*?)(["]*)$'
-   line="PATH=\1\2:{{ bin_dir }}\3"
-  when: bin_dir is defined
-
 - name: Install PostgreSQL support
   yum: name={{item}} state=present
   when: postgres_user_privileges|length > 0
