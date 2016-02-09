@@ -9,9 +9,7 @@
     - php-fpm-restart
 
 - name: Install Composer
-  shell:
-    curl -sS https://getcomposer.org/installer | php && /bin/mv -f /home/vagrant/composer.phar /usr/local/bin/composer
-    creates=/usr/local/bin/composer
+  get_url: url=https://getcomposer.org/composer.phar dest=/usr/local/bin/composer
 
 - name: Add composer bin directory to PATH
   lineinfile: >
