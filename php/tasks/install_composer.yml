@@ -11,6 +11,9 @@
 - name: Install Composer
   get_url: url=https://getcomposer.org/composer.phar dest=/usr/local/bin/composer
 
+- name: Ensure composer is executable
+  file: path=/usr/local/bin/composer state=file mode="ugo+x"
+
 - name: Add composer bin directory to PATH
   lineinfile: >
    dest=/etc/environment
