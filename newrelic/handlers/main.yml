@@ -1,0 +1,10 @@
+---
+
+- name: newrelic-start
+  shell: /etc/init.d/newrelic-sysmond start
+
+- name: newrelic-stop
+  shell: /etc/init.d/newrelic-sysmond stop
+
+- name: newrelic-restart
+  shell: /etc/init.d/newrelic-sysmond restart

@@ -1,0 +1,24 @@
+---
+
+- name: Configure the New Relic apt repository
+  apt_repository:
+    repo: deb http://apt.newrelic.com/debian/ newrelic non-free
+    state: present
+    filename: 'newrelic'
+
+- name: Trust the New Relic GPG key
+  apt_key:
+    url: https://download.newrelic.com/548C16BF.gpg
+    state: present
+
+- name: Install Server Monitor package
+  apt: name=newrelic-sysmond state=latest update_cache=yes allow_unauthenticated=yes
+  notify:
+    - newrelic-start
+
+- name: Set configuration file
+  template:
+    src: nrsysmond.cfg
+    dest: /etc/newrelic/nrsysmond.cfg
+  notify:
+    - newrelic-restart
